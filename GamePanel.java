@@ -891,15 +891,14 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
 			for(temp=0; temp<360; temp+=itter)//saucer
 			{
+				//top ring
 				enterprise.add(
 					new Line3d(
 						new pos3d(
-							(Math.sin(Math.toRadians(temp)))*140,
-							86, //top ring
+							(Math.sin(Math.toRadians(temp)))*140, 86, 
 							(Math.cos(Math.toRadians(temp)))*140),
 						new pos3d( 
-							(Math.sin(Math.toRadians(temp+itter)))*140,	
-							86, 
+							(Math.sin(Math.toRadians(temp+itter)))*140, 86, 
 							(Math.cos(Math.toRadians(temp+itter)))*140)   
 						)
 					);
@@ -1007,8 +1006,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
 			}
 			itter=22.5*detail;
-//			itter=1;
-			for(temp=0; temp<360; temp+=itter) //enginering hull
+
+			//enginering hull
+			for(temp=0; temp<360; temp+=itter) 
 			{
 
 				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*24,		 //1 ring
@@ -1043,12 +1043,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 										new pos3d( (Math.sin(Math.toRadians(temp)))*34, 
 												   (Math.cos(Math.toRadians(temp)))*34-1,	200 +5*Math.atan(Math.cos(Math.toRadians(temp      ))*8))   ));
 
-
-//				ellipse.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*34, 
-//		                   						   (Math.cos(Math.toRadians(temp)))*34-1,	200 +5*Math.atan(Math.cos(Math.toRadians(temp      ))*8)),
-//		                   				new pos3d( (Math.sin(Math.toRadians(temp+itter)))*34, 
-//		                   						   (Math.cos(Math.toRadians(temp+itter)))*34-1,	200 +5*Math.atan(Math.cos(Math.toRadians(temp+itter))*8))   ));
-
 				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*26,		 //5 ring
 												   (Math.cos(Math.toRadians(temp)))*26-4,         280 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
 										new pos3d( (Math.sin(Math.toRadians(temp)))*34, 
@@ -1065,27 +1059,13 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 												   (Math.cos(Math.toRadians(temp)))*26-4,         280 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
 										new pos3d( (Math.sin(Math.toRadians(360-temp)))*26, 
 								                   (Math.cos(Math.toRadians(360-temp)))*26-4,	280 +40*Math.atan(Math.cos(Math.toRadians(360-temp))*8)  )));
-				
-
-//				ellipse.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*26,		 //5 ring
-//						   						   (Math.cos(Math.toRadians(temp)))*26-4,         270 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
-//										new pos3d( (Math.sin(Math.toRadians(temp)))*10, 
-//								                   (Math.cos(Math.toRadians(temp)))*10,	330)   ));
-
-
-//				ellipse.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*10,		 //6 ring
-//												   (Math.cos(Math.toRadians(temp)))*10, 330),
-//										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*10, 
-//								                   (Math.cos(Math.toRadians(temp+itter)))*10,	330)   ));
-				
-				
 			}
 			itter=22.5*detail;
 
-//			itter=1;
 			for(int i=-1; i<=1; i+=2)
-				for(temp=0; temp<360; temp+=itter)//warp nacelle
 			{
+				for(temp=0; temp<360; temp+=itter)//warp nacelle
+				{
 
 					enterprise.add(new Line3d(	new pos3d( 100*i,		 //1 ring
 													   100, 144),
@@ -1132,115 +1112,83 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 													   (Math.cos(Math.toRadians(temp)))*16+100  ,         480 +8*Math.atan(Math.cos(Math.toRadians(temp))*8)  ),
 										    new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16+100*i,		 //5 ring
 													   (Math.cos(Math.toRadians(temp+itter)))*16+100  ,    480 +8*Math.atan(Math.cos(Math.toRadians(temp+itter))*8)  ) ));
+				}
 			}
-			{//pylons
+			
+			//pylons
 				//=="neck"
-				enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
-												   70  ,     132  ),
-										new pos3d( 4, 
-												   30,	164)   ));
+			enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
+											   70  ,     132  ),
+									new pos3d( 4, 
+											   30,	164)   ));
+
+
+			enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
+											   70  ,        132  ),
+									new pos3d( -4, 
+											   30,	164)   ));
+
+
+			enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
+											   70  ,     54  ),
+									new pos3d( 4, 
+											   30,	110)   ));
+
+			enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
+											   70  ,     54  ),
+									new pos3d( -4, 
+											   30,	110)   ));
+
+			
+			//====="warp engines pylons"
+			enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
+											   17  ,     230  ),
+									new pos3d( 87, 
+											   90,	230)   ));
+
+			enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
+											   17  ,     256  ),
+									new pos3d( 87, 
+											   90,	256)   ));
 
 
 
-				enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
-												   70  ,        132  ),
-										new pos3d( -4, 
-												   30,	164)   ));
+			enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
+											   13  ,        230  ),
+									new pos3d( 91, 
+											   86,	230)   ));
 
+			enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
+											   13  ,        256  ),
+									new pos3d( 91, 
+											   86,	256)   ));
 
-				enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
-												   70  ,     54  ),
-										new pos3d( 4, 
-												   30,	110)   ));
+			//====="warp engines pylons"
+			enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
+											   17  ,     230  ),
+									new pos3d(-87, 
+											   90,	230)   ));
 
-				enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
-												   70  ,     54  ),
-										new pos3d( -4, 
-												   30,	110)   ));
+			enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
+											   17  ,     256  ),
+									new pos3d(-87, 
+											   90,	256)   ));
 
-				
-				//====="warp engines pylons"
-				enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
-												   17  ,     230  ),
-										new pos3d( 87, 
-												   90,	230)   ));
+			enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
+											   13  ,        230  ),
+									new pos3d(-91, 
+											   86,	230)   ));
 
-				enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
-												   17  ,     256  ),
-										new pos3d( 87, 
-												   90,	256)   ));
-
-
-
-				enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
-												   13  ,        230  ),
-										new pos3d( 91, 
-												   86,	230)   ));
-
-				enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
-												   13  ,        256  ),
-										new pos3d( 91, 
-												   86,	256)   ));
-
-				//====="warp engines pylons"
-				enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
-												   17  ,     230  ),
-										new pos3d(-87, 
-												   90,	230)   ));
-
-				enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
-												   17  ,     256  ),
-										new pos3d(-87, 
-												   90,	256)   ));
-
-
-
-				enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
-												   13  ,        230  ),
-										new pos3d(-91, 
-												   86,	230)   ));
-
-				enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
-												   13  ,        256  ),
-										new pos3d(-91, 
-												   86,	256)   ));
-
-//
-//				ellipse.add(new Line3d(	new pos3d( 4,		 //5 ring
-//												   70  ,     54  ),
-//										new pos3d( 4, 
-//												   30,	110)   ));
-//
-//				ellipse.add(new Line3d(	new pos3d( -4,		 //5 ring
-//												   70  ,     54  ),
-//										new pos3d( -4, 
-//												   30,	110)   ));
-
-			}
-//			for(temp=0; temp<360;temp++)
-//				for(double temp2=0; temp2<360;temp2++)
-//					sky.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100,		 //1 ring
-//											           (Math.cos(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100  , 160-16*Math.sqrt(2)/2),
-//											new pos3d( (Math.sin(Math.toRadians(temp)))*16 -100, 
-//													   (Math.cos(Math.toRadians(temp)))*16 -100  ,	160)   ));
-
+			enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
+											   13  ,        256  ),
+									new pos3d(-91, 
+											   86,	256)   ));
 		}
 		
-		if(e.getKeyCode()==KeyEvent.VK_3)
-		{
-		in3dmode=!in3dmode;
-		}
 		if(e.getKeyCode()==KeyEvent.VK_4)
 		{
-		island=new World();
+			island=new World();
 		}
-		
-		
-//		if(e.getKeyCode()==KeyEvent.VK_Y)
-//		{
-//			oversample=!oversample;
-//			clearBG=true;
-//		}
 	}
 
 	@Override
@@ -1359,38 +1307,26 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		//System.out.println("BEEP BEEP BEEP"+e1.x+","+e1.y+","+e1.z);
 		if (e1.z>0.125&&e2.z>0.125&&e3.z>0.125&&e4.z>0.125)
 		{
-//			int[] x={(int)(( -FOVmod*(e1.x*128) / (e1.z))*drawWidthMult)	+gameWidth/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e2.x*128) / (e2.z))*drawWidthMult)	+gameWidth/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e3.x*128) / (e3.z))*drawWidthMult)	+gameWidth/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e4.x*128) / (e4.z))*drawWidthMult)	+gameWidth/2+(int)(Math.random()*8-4),}; 
-//			int[] y={(int)(( -FOVmod*(e1.y*128) / (e1.z)))				+gameHeight/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e2.y*128) / (e2.z)))			+gameHeight/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e3.y*128) / (e3.z)))			+gameHeight/2+(int)(Math.random()*8-4),
-//					 (int)(( -FOVmod*(e4.y*128) / (e4.z)))			+gameHeight/2+(int)(Math.random()*8-4),}; 
 			int i=4;
-////			g.fillPolygon(x, y, i);
-//		if (l){
-//			g.setColor(c.darker().darker());
-//			g.drawPolygon(x, y, i);
-//			}
 		
-		int[]f={(int)(( -FOVmod*(e1.x*128) / (e1.z))*drawWidthMult)	+gameWidth/2,
-					 (int)(( -FOVmod*(e2.x*128) / (e2.z))*drawWidthMult)	+gameWidth/2,
-					 (int)(( -FOVmod*(e3.x*128) / (e3.z))*drawWidthMult)	+gameWidth/2,
-					 (int)(( -FOVmod*(e4.x*128) / (e4.z))*drawWidthMult)	+gameWidth/2,}; 
-		int[]v={(int)(( -FOVmod*(e1.y*128) / (e1.z)))				+gameHeight/2,
-					 (int)(( -FOVmod*(e2.y*128) / (e2.z)))			+gameHeight/2,
-					 (int)(( -FOVmod*(e3.y*128) / (e3.z)))			+gameHeight/2,
-					 (int)(( -FOVmod*(e4.y*128) / (e4.z)))			+gameHeight/2,}; 
+			int[]f={(int)(( -FOVmod*(e1.x*128) / (e1.z))*drawWidthMult)	+gameWidth/2,
+						 (int)(( -FOVmod*(e2.x*128) / (e2.z))*drawWidthMult)	+gameWidth/2,
+						 (int)(( -FOVmod*(e3.x*128) / (e3.z))*drawWidthMult)	+gameWidth/2,
+						 (int)(( -FOVmod*(e4.x*128) / (e4.z))*drawWidthMult)	+gameWidth/2,}; 
+			int[]v={(int)(( -FOVmod*(e1.y*128) / (e1.z)))				+gameHeight/2,
+						 (int)(( -FOVmod*(e2.y*128) / (e2.z)))			+gameHeight/2,
+						 (int)(( -FOVmod*(e3.y*128) / (e3.z)))			+gameHeight/2,
+						 (int)(( -FOVmod*(e4.y*128) / (e4.z)))			+gameHeight/2,}; 
 			i=4;
-			
+
 			g.setColor(new Color((int)(c.getRed()*colorMult.x),(int)(c.getGreen()*colorMult.y),(int)(c.getBlue()*colorMult.z)));
 			
 			g.fillPolygon(f, v, i);
-		if (l){
-//			g.setColor(c);
-			g.setColor(c.darker().darker());
-			g.drawPolygon(f, v, i);
+
+			if (l)
+			{
+				g.setColor(c.darker().darker());
+				g.drawPolygon(f, v, i);
 			}
 		}
 	}
@@ -1415,31 +1351,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		double b2=0;
 		double c2=0;
 		double d2=0;
-		
-//		double a1=island.terrain[(int)(x   )][(int)(y   )], 
-//		       b1=island.terrain[(int)(x+it)][(int)(y   )],
-//		       c1=island.terrain[(int)(x+it)][(int)(y+it)],
-//		       d1=island.terrain[(int)(x   )][(int)(y+it)];
-//
-//		double a2=island.terrain[(int)(x   )][(int)(y   )], 
-//		       b2=island.terrain[(int)(x+it)][(int)(y   )],
-//		       c2=island.terrain[(int)(x+it)][(int)(y+it)],
-//		       d2=island.terrain[(int)(x   )][(int)(y+it)];
-//		
-//		double a3=island.terrain[(int)(x   )][(int)(y   )], 
-//		       b3=island.terrain[(int)(x+it)][(int)(y   )],
-//		       c3=island.terrain[(int)(x+it)][(int)(y+it)],
-//		       d3=island.terrain[(int)(x   )][(int)(y+it)];
-//		
-//		double a4=island.terrain[(int)(x   )][(int)(y   )], 
-//		       b4=island.terrain[(int)(x+it)][(int)(y   )],
-//		       c4=island.terrain[(int)(x+it)][(int)(y+it)],
-//		       d4=island.terrain[(int)(x   )][(int)(y+it)];
 
-//		a-=90;
-//		b-=90;
-//		c-=90;
-//		d-=90;
 		if (a<0)
 			a=4*-Math.sqrt(Math.abs(a));
 		if (b<0)
@@ -1469,15 +1381,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 			gee=(((127)+island.layers.get(0)[(int)x][(int)y]*4+island.layers.get(2)[(int)x/8][(int)y/8]/2)*skyLight);
 			bee=((( 64)+island.layers.get(0)[(int)x][(int)y]*4+island.layers.get(2)[(int)x/8][(int)y/8]/2)*skyLight);
 			shiny=1.5;
-//			if(a<0)
-//				a=0;
-//			if(b<0)
-//				b=0;
-//			if(c<0)
-//				c=0;
-//			if(d<0)
-//				d=0;
-			
 		}
 		else if(island.elevation[(int)x   ][(int)y   ]==0&&island.elevation[(int)x   ][(int)y   ]==0&&63+(island.terrain[(int)x][(int)y]*2)>63&&63+(island.terrain[(int)x][(int)y]*1)<256)
 		{ //shallow water-->wet sand
@@ -1485,22 +1388,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 			ahr=(((127*wet)+island.layers.get(0)[(int)x][(int)y]*2+island.layers.get(2)[(int)x/8][(int)y/8]/4)*skyLight);
 			gee=(((127*wet)+island.layers.get(0)[(int)x][(int)y]*4+island.layers.get(2)[(int)x/8][(int)y/8]/2)*skyLight);
 			bee=((( 64*wet)+island.layers.get(0)[(int)x][(int)y]*4+island.layers.get(2)[(int)x/8][(int)y/8]/2)*skyLight);
-			
-//			ahr=(((island.terrain[(int)x][(int)y]*0.8+10)/4)*skyLight);
-//			gee=(((island.terrain[(int)x][(int)y]*0.8+10)/2)*skyLight);
-//			bee=((63+(island.terrain[(int)x][(int)y]/2))*skyLight);
+		
 			shiny=0.1;
 			alfa=island.terrain[(int)x][(int)y]*5-64;
 			l=false;
-//			if(a>0)
-//				a=0;
-//			if(b>0)
-//				b=0;
-//			if(c>0)
-//				c=0;
-//			if(d>0)
-//				d=0;
-			
 		}
 		else if(island.elevation[(int)x   ][(int)y   ]==0)
 		{ //ocean
@@ -1519,116 +1410,60 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 			shiny=0;
 			alfa=0;
 			l=true;
-//			if(a<0)
-//				a=0;
-//			if(b<0)
-//				b=0;
-//			if(c<0)
-//				c=0;
-//			if(d<0)
-//				d=0;
-			
 		}
 		
 		
-		
-//		if(x>it&&y>it){
-////		if(a<0&&(island.terrain[(int)(x   )][(int)(y   )]>0
-////			   ||island.terrain[(int)(x-it)][(int)(y   )]>0
-////		       ||island.terrain[(int)(x-it)][(int)(y-it)]>0
-////			   ||island.terrain[(int)(x   )][(int)(y-it)]>0))
-////			a=0;
-////		if(b<0&&(island.terrain[(int)(x+it)][(int)(y   )]>0
-////			   ||island.terrain[(int)(x   )][(int)(y   )]>0
-////			   ||island.terrain[(int)(x   )][(int)(y-it)]>0
-////			   ||island.terrain[(int)(x+it)][(int)(y-it)]>0))
-////			b=0;
-//		if(c<0==(island.terrain[(int)(x+it)][(int)(y+it)]>0
-//			   ||island.terrain[(int)(x   )][(int)(y+it)]>0
-//			   ||island.terrain[(int)(x   )][(int)(y   )]>0
-//			   ||island.terrain[(int)(x+it)][(int)(y   )]>0))
-//			c=0;
-//		
-////		if(d<0&&(island.terrain[(int)(x   )][(int)(y+it)]>0
-////			   ||island.terrain[(int)(x-it)][(int)(y+it)]>0
-////		       ||island.terrain[(int)(x-it)][(int)(y   )]>0
-////			   ||island.terrain[(int)(x   )][(int)(y   )]>0))
-////			d=0;
-//		}
-//		
 		ahr*=1.5;
 		gee*=1.5;
 		bee*=1.5;
 		ahr+=(island.terrain[(int)(x+it)][(int) y    ]-island.terrain[(int) x    ][(int)(y+it)])*shiny/it*skyLight*3;
 		gee+=(island.terrain[(int)(x+it)][(int) y    ]-island.terrain[(int) x    ][(int)(y+it)])*shiny/it*skyLight*3;
 		bee+=(island.terrain[(int)(x+it)][(int) y    ]-island.terrain[(int) x    ][(int)(y+it)])*shiny/it*skyLight*3;
-	double fact=0;
-//		if(a<0||b<0||c<0||d<0)
+		double fact=0;
 
-	ahr2=ahr;
-	gee2=gee;
-	bee2=bee;
-	 a2=a;
-	 b2=b;
-	 c2=c;
-	 d2=d;
-	{
+
+		ahr2=ahr;
+		gee2=gee;
+		bee2=bee;
+		a2=a;
+		b2=b;
+		c2=c;
+		d2=d;
 			
-			double wave=1;
-			double tide=Math.sin(ticker/20)*32+32;
-			if(a2< Math.sin((ticker/4+x+y-2*it)/2)*wave+tide){
-				fact+=0.25;
-				 a2=Math.sin((ticker/4+x+y-2*it)/2)*wave+tide;}
-			if(b2< Math.sin((ticker/4+x+y-it)/2)*wave+tide){
-				fact+=0.25;
-				 b2=Math.sin((ticker/4+x+y-it)/2)*wave+tide;}
-			if(c2< Math.sin((ticker/4+x+y+00)/2)*wave+tide){
-				fact+=0.25;
-				 c2=Math.sin((ticker/4+x+y+00)/2)*wave+tide;}
-			if(d2< Math.sin((ticker/4+x+y-it)/2)*wave+tide){
-				fact+=0.25;
-				 d2=Math.sin((ticker/4+x+y-it)/2)*wave+tide;}
-			
-//			if(a>0)fact-=0.25;
-//			if(b>0)fact-=0.25;
-//			if(c>0)fact-=0.25;
-//			if(d>0)fact-=0.25;
-			
-			if(fact>=.5)
-//			{
-//				ahr=48+Math.sin((ticker/4+x+y-it)/2)*6;
-//				gee=48+island.terrain[(int)x][(int)y]-(32+Math.sin((ticker/4+x+y-it)*12));
-//				bee=127+island.terrain[(int)x][(int)y]-(32+Math.sin((ticker/4+x+y-it)*12))+island.layers.get(0)[(int)x][(int)y]*12-24;;
-//				}
-//			else
-			{
-//				fact=1;
-				if(fact>.5)fact=1;
-				ahr2*=1-fact;
-				gee2*=1-fact;
-				bee2*=1-fact;
-				ahr2+=(48+Math.sin((ticker/4+x+y-it)/2)*6)*fact;
-				gee2+=(127+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*16-(32+Math.sin((ticker/4+x+y-it)*12)))*fact;
-				bee2+=(196+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*16-(32+Math.sin((ticker/4+x+y-it)*12))+island.layers.get(0)[(int)x][(int)y]*12-24)*fact;;
-				}
-			fact=0.5;
-			ahr*=1-fact;
-			gee*=1-fact;
-			bee*=1-fact;
-			ahr+=(48-32+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*32+Math.sin((ticker/4+x+y-it)/2)*6)*fact;
-			gee+=(127-48+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*48-(32+Math.sin((ticker/4+x+y-it)*12)))*fact;
-			bee+=(196-48+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*48-(32+Math.sin((ticker/4+x+y-it)*12))+island.layers.get(0)[(int)x][(int)y]*12-24)*fact;;
-			
-//			System.out.println(island.terrain[(int)x][(int)y]);
-//			if(a< Math.sin((ticker/4+x+y-2*it)/2)*2)
-//				a=Math.sin((ticker/4+x+y-2*it)/2)*2;
-//			if(b< Math.sin((ticker/4+x+y-it)/2)*2)
-//				b=Math.sin((ticker/4+x+y-it)/2)*2;
-//			if(c< Math.sin((ticker/4+x+y+00)/2)*2)
-//				c=Math.sin((ticker/4+x+y+00)/2)*2;
-//			if(d< Math.sin((ticker/4+x+y-it)/2)*2)
-//				d=Math.sin((ticker/4+x+y-it)/2)*2;
-			}
+		double wave=1;
+		double tide=Math.sin(ticker/20)*32+32;
+		if(a2< Math.sin((ticker/4+x+y-2*it)/2)*wave+tide){
+			fact+=0.25;
+			 a2=Math.sin((ticker/4+x+y-2*it)/2)*wave+tide;}
+		if(b2< Math.sin((ticker/4+x+y-it)/2)*wave+tide){
+			fact+=0.25;
+			 b2=Math.sin((ticker/4+x+y-it)/2)*wave+tide;}
+		if(c2< Math.sin((ticker/4+x+y+00)/2)*wave+tide){
+			fact+=0.25;
+			 c2=Math.sin((ticker/4+x+y+00)/2)*wave+tide;}
+		if(d2< Math.sin((ticker/4+x+y-it)/2)*wave+tide){
+			fact+=0.25;
+			 d2=Math.sin((ticker/4+x+y-it)/2)*wave+tide;}
+		
+		if(fact>=.5)
+		{
+			if(fact>.5)fact=1;
+			ahr2*=1-fact;
+			gee2*=1-fact;
+			bee2*=1-fact;
+			ahr2+=(48+Math.sin((ticker/4+x+y-it)/2)*6)*fact;
+			gee2+=(127+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*16-(32+Math.sin((ticker/4+x+y-it)*12)))*fact;
+			bee2+=(196+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*16-(32+Math.sin((ticker/4+x+y-it)*12))+island.layers.get(0)[(int)x][(int)y]*12-24)*fact;;
+		}
+
+		fact=0.5;
+		ahr*=1-fact;
+		gee*=1-fact;
+		bee*=1-fact;
+		ahr+=(48-32+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*32+Math.sin((ticker/4+x+y-it)/2)*6)*fact;
+		gee+=(127-48+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*48-(32+Math.sin((ticker/4+x+y-it)*12)))*fact;
+		bee+=(196-48+Math.atan((island.terrain[(int)x][(int)y]-tide)/16-3)*48-(32+Math.sin((ticker/4+x+y-it)*12))+island.layers.get(0)[(int)x][(int)y]*12-24)*fact;;
+		
 		if(ahr>255)
 			ahr=255;
 		if(ahr<0)
@@ -1658,10 +1493,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 			bee2=255;
 		if(bee2<0)
 			bee2=0;
-//		if(alfa2>255)
-//			alfa2=255;
-//		if(alfa2<0)
-//			alfa2=0;
 		
 		Color color=new Color((int)ahr, (int)gee, (int)bee);
 		drawPoly(new pos3d(x   -128,1*(a)/8,y   -128), 
@@ -1681,222 +1512,126 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		double bee1=bee;
 		
 		boolean o1=false, o2=false, o3=false, o4=false;
-//		if(island.terrain[(int)  x   ][(int)  y   ] + Math.sin(Math.toRadians(ticker+x   )*8)+Math.sin(Math.toRadians(ticker+y   )*8) <=60)o1=false;
-//		if(island.terrain[(int)(x+it)][(int)  y   ] + Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8) <=60)o2=false;
-//		if(island.terrain[(int)(x+it)][(int)(y+it)] + Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y+it)*8) <=60)o3=false;
-//		if(island.terrain[(int)  x   ][(int)(y+it)] + Math.sin(Math.toRadians(ticker+x   )*8)+Math.sin(Math.toRadians(ticker+y+it)*8) <=60)o4=false;
-			//Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
-//			if(false)
+
+		ahr=0;
+		gee=0;
+		bee=32;
 		
-//		if(!(o1&&o2&&o3&&o4))
-			{ //ocean
-//				ahr=island.layers.get(0)[(int)x][(int)y]*8;
-//				gee=island.layers.get(0)[(int)x][(int)y]*8;
-//				bee=(63*skyLight)+island.layers.get(0)[(int)x][(int)y]*8;
-				ahr=0;
-				gee=0;
-				bee=32;
-				
+		shiny=16;
+		alfa=127;
+		l=false;				
+	
+		ahr+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
+			 -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
 
-				
-				shiny=16;
-				alfa=127;
-				l=false;
-//				if(a<0)
-//					a=0;
-//				if(b<0)
-//					b=0;
-//				if(c<0)
-//					c=0;
-//				if(d<0)
-//					d=0;
-				
-//				if(a>sealevel){
-//					ahr*=2;
-//					gee*=2;
-//					bee*=2;}
-//				if(b>sealevel){
-//					ahr*=2;
-//					gee*=2;
-//					bee*=2;}
-//				if(c>sealevel){
-//					ahr*=2;
-//					gee*=2;
-//					bee*=2;}
-//				if(d>sealevel){
-//					ahr*=2;
-//					gee*=2;
-//					bee*=2;}
-				
-			
-				ahr+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
-					 -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
-				gee+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
-					 -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
-				bee+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
-				     -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
-				
-				if(ahr>255)
-					ahr=255;
-				if(ahr<0)
-					ahr=0;
-				if(gee>255)
-					gee=255;
-				if(gee<0)
-					gee=0;
-				if(bee>255)
-					bee=255;
-				if(bee<0)
-					bee=0;
-				if(alfa>255)
-					alfa=255;
-				if(alfa<0)
-					alfa=0;
-				alfa=255;
-				ahr=ahr/4;
-				gee=gee/4;
-				bee=bee/2+64*skyLight;
-//				if(x%(it*1)==0&&y%(it*1)==0)
-//				for(double i=sealevel*30;i>=island.terrain[(int)x][(int)y]-90;i-=256)
-//				{color=new Color((int)ahr/4, (int)gee/4, (int)64, (int)32);
-//				drawPoly(new pos3d(x   -128,
-//								   1*(a)/8-2 +i/30,
-//						           y   -128), 
-//						 new pos3d(x+it*it*4-128,
-//						           1*(b)/8-2 +i/30,
-//					               y -128),
-//						 new pos3d(x+it*it*4-128,
-//						           1*(c)/8-2 +i/30,
-//						           y+it*it*4-128),
-//						 new pos3d(x   -128,
-//						           1*(d)/8-2 +i/30,
-//						           y+it*it*4-128), g, 
-//				 color, l);
-//				}
-				
-//				a=island.terrain[(int)(x   )][(int)(y   )]-90; 
-//				b=island.terrain[(int)(x+it)][(int)(y   )]-90;
-//				c=island.terrain[(int)(x+it)][(int)(y+it)]-90;
-//				d=island.terrain[(int)(x   )][(int)(y+it)]-90;
-				
-				double g1= 1*(a)/8-2;
-				double g2= 1*(b)/8-2;
-				double g3= 1*(c)/8-2;
-				double g4= 1*(d)/8-2;
-				
-				double e1= (Math.sin(Math.toRadians(ticker*1+x   )*16)+Math.sin(Math.toRadians(ticker*1+y   )*16))/4+sealevel;
-				double e2= (Math.sin(Math.toRadians(ticker*1+x+it)*16)+Math.sin(Math.toRadians(ticker*1+y   )*16))/4+sealevel;
-				double e3= (Math.sin(Math.toRadians(ticker*1+x+it)*16)+Math.sin(Math.toRadians(ticker*1+y+it)*16))/4+sealevel;
-				double e4= (Math.sin(Math.toRadians(ticker*1+x   )*16)+Math.sin(Math.toRadians(ticker*1+y+it)*16))/4+sealevel;
+		gee+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
+			 -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
 
-//				if(g1>0){g1=0;}
-//				if(g2>0){g2=0;}
-//				if(g3>0){g3=0;}
-//				if(g4>0){g4=0;}
-//				if(g2>=e2){e2=g2;o2=true;}
-//				if(g3>=e3){e3=g3;o3=true;}
-//				if(g4>=e4){e4=g4;o4=true;}
-				
-				
-//				if(g1>=e1){e1=g1;o1=true;}
-//				if(g2>=e2){e2=g2;o2=true;}
-//				if(g3>=e3){e3=g3;o3=true;}
-//				if(g4>=e4){e4=g4;o4=true;}
-				
-//				if( true ){e1=g1;o1=true;}
-//				if( true ){e2=g2;o2=true;}
-//				if( true ){e3=g3;o3=true;}
-//				if( true ){e4=g4;o4=true;}
-				
-//				if( true ){e1=g1;o1=false;}
-//				if( true ){e2=g2;o2=false;}
-//				if( true ){e3=g3;o3=false;}
-//				if( true ){e4=g4;o4=false;}
+		bee+=(Math.sin(Math.toRadians(ticker+x+it)*8)+Math.sin(Math.toRadians(ticker+y   )*8)
+		     -Math.sin(Math.toRadians(ticker+x   )*8)-Math.sin(Math.toRadians(ticker+y+it)*8))*shiny/it*skyLight*8;
+		
+		if(ahr>255)
+			ahr=255;
 
-//				ahr=127;
-//				gee=127;
-//				bee=0;
-				
-				if(g1>=e1){e1=g1;o1=true;
-				ahr+=32;gee+=32;
-				bee+=64;alfa-=64;
-				}
-				
-				if(g2>=e2){e2=g2;o2=true;
-				ahr+=32;gee+=32;
-				bee+=64;alfa-=64;
-				}
-				
-				if(g3>=e3){e3=g3;o3=true;
-				ahr+=32;gee+=32;
-				bee+=64;alfa-=64;
-				}
-				
-				if(g4>=e4){e4=g4;o4=true;
-				ahr+=32;gee+=32;
-				bee+=64;alfa-=64;
-				}
-//				if(o1&&o2&&o3&&o4)
-//				{
-//					bee+=32;
-//					o1=false; o2=false; o3=false;o4=false;
-//				}
-//				o1=false; o2=false; o3=false;o4=false;
-				
-				if(ahr>255)
-					ahr=255;
-				if(ahr<0)
-					ahr=0;
-				if(gee>255)
-					gee=255;
-				if(gee<0)
-					gee=0;
-				if(bee>255)
-					bee=255;
-				if(bee<0)
-					bee=0;
-				if(alfa>255)
-					alfa=255;
-				if(alfa<0)
-					alfa=0;
-				alfa=255;
-				if(alfa!=0){
-					color=new Color((int)ahr1, (int)gee1, (int)bee1);
-//					drawPoly(new pos3d(x   -128,
-//								 	 e1,
-//									 y   -128), 
-//							 new pos3d(x+it-128,
-//									 e2,
-//									 y -128),
-//							 new pos3d(x+it-128,
-//									 e3,
-//									 y+it-128),
-//							 new pos3d(x   -128,
-//									 e4,
-//									 y+it-128), g, 
-//							 color, true);
-					}
-				if(true&&!(o1&&o2&&o3&&o4)){
-				color=new Color((int)ahr, (int)gee, (int)bee, (int)alfa);
-//				drawPoly(new pos3d(x   -128,
-//							 	 e1,
-//								 y   -128), 
-//						 new pos3d(x+it-128,
-//								 e2,
-//								 y -128),
-//						 new pos3d(x+it-128,
-//								 e3,
-//								 y+it-128),
-//						 new pos3d(x   -128,
-//								 e4,
-//								 y+it-128), g, 
-//						 color, true);
-				}
-				
-			 
-				
-				
+		if(ahr<0)
+			ahr=0;
+
+		if(gee>255)
+			gee=255;
+
+		if(gee<0)
+			gee=0;
+
+		if(bee>255)
+			bee=255;
+
+		if(bee<0)
+			bee=0;
+
+		if(alfa>255)
+			alfa=255;
+
+		if(alfa<0)
+			alfa=0;
+		
+		alfa=255;
+		ahr=ahr/4;
+		gee=gee/4;
+		bee=bee/2+64*skyLight;
+
+		double g1= 1*(a)/8-2;
+		double g2= 1*(b)/8-2;
+		double g3= 1*(c)/8-2;
+		double g4= 1*(d)/8-2;
+		
+		double e1= (  Math.sin(Math.toRadians(ticker*1+x   )*16)
+					+ Math.sin(Math.toRadians(ticker*1+y   )*16))/4+sealevel;
+
+		double e2= (  Math.sin(Math.toRadians(ticker*1+x+it)*16)
+					+ Math.sin(Math.toRadians(ticker*1+y   )*16))/4+sealevel;
+
+		double e3= (  Math.sin(Math.toRadians(ticker*1+x+it)*16)
+					+ Math.sin(Math.toRadians(ticker*1+y+it)*16))/4+sealevel;
+
+		double e4= (  Math.sin(Math.toRadians(ticker*1+x   )*16)
+					+ Math.sin(Math.toRadians(ticker*1+y+it)*16))/4+sealevel;
+
+		if(g1>=e1){e1=g1;o1=true;
+			ahr+=32;gee+=32;
+			bee+=64;alfa-=64;
 		}
+		
+		if(g2>=e2){e2=g2;o2=true;
+			ahr+=32;gee+=32;
+			bee+=64;alfa-=64;
+		}
+		
+		if(g3>=e3){e3=g3;o3=true;
+			ahr+=32;gee+=32;
+			bee+=64;alfa-=64;
+		}
+		
+		if(g4>=e4){e4=g4;o4=true;
+			ahr+=32;gee+=32;
+			bee+=64;alfa-=64;
+		}
+
+		if(ahr>255)
+			ahr=255;
+
+		if(ahr<0)
+			ahr=0;
+
+		if(gee>255)
+			gee=255;
+
+		if(gee<0)
+			gee=0;
+
+		if(bee>255)
+			bee=255;
+
+		if(bee<0)
+			bee=0;
+
+		if(alfa>255)
+			alfa=255;
+
+		if(alfa<0)
+			alfa=0;
+		alfa=255;
+
+		if(alfa!=0)
+		{
+			color=new Color((int)ahr1, (int)gee1, (int)bee1);
+		}
+
+		if(true&&!(o1&&o2&&o3&&o4))
+		{
+			color=new Color((int)ahr, (int)gee, (int)bee, (int)alfa);
+		}
+				
+		
 	}
 	
 }
