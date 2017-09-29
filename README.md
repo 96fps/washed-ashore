@@ -1,6 +1,8 @@
 # washed-ashore
 Cleanup of a several-year-old 3D project written in java.
 
+![screenshot of terrain](terrain_game.png)
+
 I wrote the majority of this code my junior year of High School (2012-2013), after taking AP computer science the previous year, but moving OS's several times has messed up date-created metadata, so I don't know exactly when.
 
 The program was somewhat impressive, but the code is a mess. All of the geometry generation and rendering code is in one file, which also reads the player's keyboard and moves their ship/camera.
