@@ -91,7 +91,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 	pos2d satForce= new pos2d(0,0); //
 	double satAlt=Math.sqrt(Math.pow(gravCenter.x+satPos.x,2)+Math.pow(gravCenter.y+satPos.y,2));
 	
-	double movespeedfactor=1;
+	double movespeedfactor=16;
 	double ticker=-500;
 
 	double fametime=10;
@@ -235,10 +235,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 				control.z+=1;
 				}
 			if(keyA){
-				control.x-=1;
+				control.x+=1;
 				}
 			if(keyD){
-				control.x+=1;
+				control.x-=1;
 				}
 			if(keyShift)
 				control.y+=1;
@@ -356,8 +356,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		addMouseListener(this);
 		
 		setPreferredSize(new Dimension(gameWidth, gameHeight));
+	
 		for(int i=0; i<32; i++){
-		galaxy.add(new Spiral((int)(Math.random()*64), (int)((Math.random()*64)*1.2), (int)(Math.random()*16+2), 5, (int)(Math.random()*3+2), (int)(Math.random()*3),1,(int)(Math.random()*40-20)+(i%4)*90, galaxytilt));
+			galaxy.add(new Spiral((int)(Math.random()*64), (int)((Math.random()*64)*1.2), (int)(Math.random()*16+2), 5, (int)(Math.random()*3+2), (int)(Math.random()*3),1,(int)(Math.random()*40-20)+(i%4)*90, galaxytilt));
 		}
 		
 		for(int i=0; i<galaxy.size(); i++)
@@ -490,14 +491,14 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
 		it=4;
 		double itfactor=2;
-		double dist=it*8;
-		double lock=it*4;
-		double start=32;
-		double end=4;
+		double dist=0; //AFDASS
+		double lock=0; //qht
+		double start=64;
+		double end=1;
 
 		for(it=start; it>=end; it/=itfactor)
 		{
-			dist=it*16;
+			dist=it*8;
 			lock=it*itfactor;
 			for(double x=lock*(int)(playX/lock)-dist; x<=playX-it&&x<=256-it; x+=it)			//0-->X
 			{
@@ -655,18 +656,15 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		g.drawPolygon(xlist,ylist, 5);
 		
 		g.setColor(new Color((int)(255*colorMult.x),(int)(255*colorMult.y),(int)(255*colorMult.z)));
-		if(ticker<0){
-			g.drawString("Washed Ashore     v13.1.1       -96fps"	,64, 64);
-			g.drawString("  Arrow keys to look around"		 		,64, 64+16);
-			g.drawString("  WASD keys to move" 						,64, 64+32);
-			g.drawString("  Shift to move up"						,64, 64+48);
-			g.drawString("  Ctrl to move down"						,64, 64+64);
+		if(ticker<0)
+		{
+			g.drawString("Washed Ashore, readability update"        ,64, 64);
+			g.drawString("  IJKL keys to turn"                      ,64, 64+16);
+			g.drawString("  WASD + shift/control to move"           ,64, 64+32);
+			g.drawString("  period/comma to adjust movement speed"  ,64, 64+48);
+			g.drawString("  ..."                 					,64, 64+64);
 			//g.drawString("  CTRL to crouch"		 				,64, 64+80);
-			}
-		else
-			g.drawString("3d animation testing, WIP enterprise model -96fps", 16, gameHeight-16);
-		
-		g.drawString("shipX="+shipPos.x/128+";Y="+shipPos.y/128+";Z="+shipPos.z/128+";", 16, 16);
+		}
 		
 		
 		if(!running)
@@ -865,20 +863,15 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 		{
 			FOVmod*=1.25;
 		}
-		
-		
+			
 		if(e.getKeyCode()==KeyEvent.VK_1)
 			{
 			galaxy.clear();
 			for(int i=0; i<32; i++){
 			galaxy.add(new Spiral((int)(Math.random()*64), (int)((Math.random()*64)*1.2), (int)(Math.random()*128+128), 2, (int)(Math.random()*3+2), (int)(Math.random()*3),1,(int)(Math.random()*40-20)+(i%4)*90, galaxytilt));
 			}
-			
-			
 		}
-		
-		
-		
+				
 		if(e.getKeyCode()==KeyEvent.VK_2){
 			double temp=8;
 			double detail=5.3333;
@@ -886,303 +879,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 			detail=2;
 			int ender=4;
 			enterprise.clear();
-			
-			double itter=11.25*detail;
-
-			for(temp=0; temp<360; temp+=itter)//saucer
-			{
-				//top ring
-				enterprise.add(
-					new Line3d(
-						new pos3d(
-							(Math.sin(Math.toRadians(temp)))*140, 86, 
-							(Math.cos(Math.toRadians(temp)))*140),
-						new pos3d( 
-							(Math.sin(Math.toRadians(temp+itter)))*140, 86, 
-							(Math.cos(Math.toRadians(temp+itter)))*140)   
-						)
-					);
-
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*105,		86, //top ring
-												   (Math.cos(Math.toRadians(temp)))*105),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*105,	86, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*105)   ));
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*140,		86, //top surf
-												   (Math.cos(Math.toRadians(temp)))*140),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*105,	86, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*105)));
-
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*33,		92, //top surf
-												   (Math.cos(Math.toRadians(temp)))*33),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*105,	86, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*105)));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*33,		92, //top ring
-												   (Math.cos(Math.toRadians(temp)))*33),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*33,	92, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*33)   ));
-				
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*33,		92, //top surf
-												   (Math.cos(Math.toRadians(temp)))*33),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*27,	101, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*27)));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*14,		103, //top surf
-												   (Math.cos(Math.toRadians(temp)))*14),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*10,	109, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*10)));
-
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*14,		103, //top ring
-												   (Math.cos(Math.toRadians(temp)))*14),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*14,	103, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*14)   ));
-				
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*14,		103, //top surf
-												   (Math.cos(Math.toRadians(temp)))*14),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*27,	101, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*27)));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*10,		109, //top surf
-												   (Math.cos(Math.toRadians(temp)))*10),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*6,	110, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*6)));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*6,		110, //top ring
-												   (Math.cos(Math.toRadians(temp)))*6),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*6,	110, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*6)   ));
-				
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*6,		110, //top surf
-												   (Math.cos(Math.toRadians(temp)))*6),
-						   			    new pos3d( 0,	113, 
-						   			    		   0)));
-				
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*132,	70, //low surf
-												   (Math.cos(Math.toRadians(temp)))*132),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*118,	70, 
-								                   (Math.cos(Math.toRadians(temp)))*118)   ));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*118,	70, //low surf
-												   (Math.cos(Math.toRadians(temp)))*118),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*75,	75, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*75)));
-
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*75,		75, //low surf
-												   (Math.cos(Math.toRadians(temp)))*75),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*52,			70, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*52)));
-
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*52,		70, //low surf
-												   (Math.cos(Math.toRadians(temp)))*52),
-						   			    new pos3d( (Math.sin(Math.toRadians(temp)))*20,			55, 
-						   			    		   (Math.cos(Math.toRadians(temp)))*20)));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*20,		55, //low surf
-												   (Math.cos(Math.toRadians(temp)))*20),
-						   			    new pos3d( 0,										52, 
-						   			    		   0)));
-				
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*140,		86, //vert edges
-												   (Math.cos(Math.toRadians(temp)))*140),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*132,		70,
-												   (Math.cos(Math.toRadians(temp)))*132)));
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*132,		70,  //lower ring
-												   (Math.cos(Math.toRadians(temp)))*132),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*132,	70, 
-												   (Math.cos(Math.toRadians(temp+itter)))*132)   ));
-
-
-			}
-			itter=22.5*detail;
-
-			//enginering hull
-			for(temp=0; temp<360; temp+=itter) 
-			{
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*24,		 //1 ring
-												   (Math.cos(Math.toRadians(temp)))*24, 90),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*24, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*24,	90)   ));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*24,		 //1-2 surf
-												   (Math.cos(Math.toRadians(temp)))*24, 90),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*32, 
-								                   (Math.cos(Math.toRadians(temp)))*32,	106)   ));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*32,		 //2 ring
-												   (Math.cos(Math.toRadians(temp)))*32, 106),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*32, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*32,	106)   ));
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*32,		 //2-3 surf
-												   (Math.cos(Math.toRadians(temp)))*32, 106),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*36, 
-								                   (Math.cos(Math.toRadians(temp)))*36,	174)   ));
-
 		
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*36,		 //3 ring
-												   (Math.cos(Math.toRadians(temp)))*36, 174),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*36, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*36,	174)   ));
-				
-				
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*36,		 //3-4 surf
-												   (Math.cos(Math.toRadians(temp)))*36, 174),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*34, 
-												   (Math.cos(Math.toRadians(temp)))*34-1,	200 +5*Math.atan(Math.cos(Math.toRadians(temp      ))*8))   ));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*26,		 //5 ring
-												   (Math.cos(Math.toRadians(temp)))*26-4,         280 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
-										new pos3d( (Math.sin(Math.toRadians(temp)))*34, 
-								                   (Math.cos(Math.toRadians(temp)))*34-1,	200 +5*Math.atan(Math.cos(Math.toRadians(temp      ))*8))   ));
-
-
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*26,		 //5 ring
-												   (Math.cos(Math.toRadians(temp)))*26-4,         280 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
-										new pos3d( (Math.sin(Math.toRadians(temp+itter)))*26, 
-								                   (Math.cos(Math.toRadians(temp+itter)))*26-4,	280 +40*Math.atan(Math.cos(Math.toRadians(temp+itter))*8)  )));
-
-				enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*26,		 //5 ring
-												   (Math.cos(Math.toRadians(temp)))*26-4,         280 +40*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
-										new pos3d( (Math.sin(Math.toRadians(360-temp)))*26, 
-								                   (Math.cos(Math.toRadians(360-temp)))*26-4,	280 +40*Math.atan(Math.cos(Math.toRadians(360-temp))*8)  )));
-			}
-			itter=22.5*detail;
-
-			for(int i=-1; i<=1; i+=2)
-			{
-				for(temp=0; temp<360; temp+=itter)//warp nacelle
-				{
-
-					enterprise.add(new Line3d(	new pos3d( 100*i,		 //1 ring
-													   100, 144),
-											new pos3d( (Math.sin(Math.toRadians(temp)))*16*Math.sqrt(2)/2+100*i, 
-									                   (Math.cos(Math.toRadians(temp)))*16*Math.sqrt(2)/2+100,	160-16*Math.sqrt(2)/2)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100*i,		 //1 ring
-													   (Math.cos(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100  , 160-16*Math.sqrt(2)/2),
-											new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i, 
-									                   (Math.cos(Math.toRadians(temp)))*16 +100  ,	160)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100*i,		 //1 ring
-													   (Math.cos(Math.toRadians(temp)))*16*Math.sqrt(2)/2 +100  , 160-16*Math.sqrt(2)/2),
-											new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16*Math.sqrt(2)/2 +100*i,		 //1 ring
-													   (Math.cos(Math.toRadians(temp+itter)))*16*Math.sqrt(2)/2 +100  , 160-16*Math.sqrt(2)/2)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i,		 //1 ring
-													   (Math.cos(Math.toRadians(temp)))*16+100, 160),
-											new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16 +100*i, 
-									                   (Math.cos(Math.toRadians(temp+itter)))*16+100,	160)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i,		 //1 ring
-													   (Math.cos(Math.toRadians(temp)))*16 +100  , 160),
-											new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i, 
-									                   (Math.cos(Math.toRadians(temp)))*16 +100  ,	460)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i,		 //1 ring
-											    	   (Math.cos(Math.toRadians(temp)))*16+100, 460),
-										    new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16 +100*i, 
-										    		   (Math.cos(Math.toRadians(temp+itter)))*16+100,	460)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16 +100*i,		 //1 ring
-										    		   (Math.cos(Math.toRadians(temp)))*16+100, 460),
-									     	new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16 +100*i, 
-								                       (Math.cos(Math.toRadians(temp+itter)))*16+100,	460)   ));
-
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16+100*i,		 //5 ring
-													   (Math.cos(Math.toRadians(temp)))*16+100  ,         480 +8*Math.atan(Math.cos(Math.toRadians(temp      ))*8)  ),
-											new pos3d( (Math.sin(Math.toRadians(temp)))*16+100*i, 
-									                   (Math.cos(Math.toRadians(temp)))*16+100  ,	460)   ));
-
-					enterprise.add(new Line3d(	new pos3d( (Math.sin(Math.toRadians(temp)))*16+100*i,		 //5 ring
-													   (Math.cos(Math.toRadians(temp)))*16+100  ,         480 +8*Math.atan(Math.cos(Math.toRadians(temp))*8)  ),
-										    new pos3d( (Math.sin(Math.toRadians(temp+itter)))*16+100*i,		 //5 ring
-													   (Math.cos(Math.toRadians(temp+itter)))*16+100  ,    480 +8*Math.atan(Math.cos(Math.toRadians(temp+itter))*8)  ) ));
-				}
-			}
-			
-			//pylons
-				//=="neck"
-			enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
-											   70  ,     132  ),
-									new pos3d( 4, 
-											   30,	164)   ));
-
-
-			enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
-											   70  ,        132  ),
-									new pos3d( -4, 
-											   30,	164)   ));
-
-
-			enterprise.add(new Line3d(	new pos3d( 4,		 //5 ring
-											   70  ,     54  ),
-									new pos3d( 4, 
-											   30,	110)   ));
-
-			enterprise.add(new Line3d(	new pos3d( -4,		 //5 ring
-											   70  ,     54  ),
-									new pos3d( -4, 
-											   30,	110)   ));
-
-			
-			//====="warp engines pylons"
-			enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
-											   17  ,     230  ),
-									new pos3d( 87, 
-											   90,	230)   ));
-
-			enterprise.add(new Line3d(	new pos3d( 23,		 //5 ring
-											   17  ,     256  ),
-									new pos3d( 87, 
-											   90,	256)   ));
-
-
-
-			enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
-											   13  ,        230  ),
-									new pos3d( 91, 
-											   86,	230)   ));
-
-			enterprise.add(new Line3d(	new pos3d( 27,		 //5 ring
-											   13  ,        256  ),
-									new pos3d( 91, 
-											   86,	256)   ));
-
-			//====="warp engines pylons"
-			enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
-											   17  ,     230  ),
-									new pos3d(-87, 
-											   90,	230)   ));
-
-			enterprise.add(new Line3d(	new pos3d(-23,		 //5 ring
-											   17  ,     256  ),
-									new pos3d(-87, 
-											   90,	256)   ));
-
-			enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
-											   13  ,        230  ),
-									new pos3d(-91, 
-											   86,	230)   ));
-
-			enterprise.add(new Line3d(	new pos3d(-27,		 //5 ring
-											   13  ,        256  ),
-									new pos3d(-91, 
-											   86,	256)   ));
+			/*	
+				enterprise = geogen.newship();
+			*/
 		}
 		
 		if(e.getKeyCode()==KeyEvent.VK_4)
