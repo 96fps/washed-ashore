@@ -1,0 +1,7 @@
+#! /bin/bash
+
+javac *.java -d build
+
+cd build
+java GameViewer3d
+cd ..

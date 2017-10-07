@@ -37,8 +37,8 @@ public class World {
 			
 			//generate noise
 			for(int z=0;z<layers.size();z++){
-				System.out.println("2^"+z);
-				System.out.println(Math.pow(2,z));
+				// System.out.println("2^"+z);
+				// System.out.println(Math.pow(2,z));
 				for(int x=0; x<(width/(Math.pow(2,z)))+1; x++)
 					for(int y=0; y<(height/(Math.pow(2,z)))+1; y++)
 					{
@@ -70,26 +70,26 @@ public class World {
 			}
 			
 			
-			//island-ify
-//			for(int x=0-(width/2); x<width-(width/2); x++){
-//				for(int y=0-(height/2); y<height-(height/2); y++)	{
-//					if(((x*x)+(y*y))/height>0&&((x*x)+(y*y))/height<256){
-//						terrain[x+(width/2)][y+(height/2)] = (int)((terrain[x+(width/2)][y+(height/2)])-2*(((x*x)/height)+((y*y)/height)));
-//					}
-//					else if(((x*x)+(y*y))/height>0)
-//					{
+		//	island-ify
+			for(int x=0-(width/2); x<width-(width/2); x++){
+				for(int y=0-(height/2); y<height-(height/2); y++)	{
+					if(((x*x)+(y*y))/height>0&&((x*x)+(y*y))/height<256){
+						terrain[x+(width/2)][y+(height/2)] = (int)((terrain[x+(width/2)][y+(height/2)])-2*(((x*x)/height)+((y*y)/height)));
+					}
+					else if(((x*x)+(y*y))/height>0)
+					{
+						terrain[x+(width/2)][y+(height/2)]=255;
+					}
+					else
+					{
 //						terrain[x+(width/2)][y+(height/2)]=255;
-//					}
-//					else
-//					{
-////						terrain[x+(width/2)][y+(height/2)]=255;
-//					}
-//					
-//				}
-//
-//			
-//			}
+					}
+					
+				}
+
+			
 			}
+		}
 	}
 	
 
@@ -118,7 +118,7 @@ public class World {
 		{
 			int x=(int)(Math.random()*width);
 			int y=(int)(Math.random()*height);
-			System.out.println("New Tree!"+x+","+y+"!");
+			// System.out.println("New Tree!"+x+","+y+"!");
 			if(terrain[x][y]>96)
 			{
 			//	terrain[x][y]=10000;
@@ -127,66 +127,5 @@ public class World {
 				z-=0.5;
 			}
 		}
-		
-//		for(int x=0; x<width; x++){
-//			for(int y=0; y<height; y++)	
-//				if(terrain[x][y]>1000 && world[x][y]==null)
-//				{
-//					world[x][y] = new Tile_Tree();
-//					System.out.println("Tree:"+x+","+y+"!");
-//				}
-//				else if(terrain[x][y]>100 && world[x][y]==null)
-//				{
-//					world[x][y] = new Tile_Grass();
-//					System.out.println("Grass:"+x+","+y+"!");
-//				}
-//				else if(terrain[x][y]>90)
-//				{
-//					world[x][y] = new Tile_Sand();
-//					System.out.println("Sand:"+x+","+y+"!");
-//				}
-//				else if(terrain[x][y]>0)
-//				{
-//					world[x][y] = new Tile_Water();
-//					System.out.println("Water:"+x+","+y+"!");
-//				}
-//				else
-//				{
-//					world[x][y] = new Tile_Water();
-//					System.out.println("Void to water:"+x+","+y+"!");
-//				}
-//			}
-		
-	
-//		repaint();
 	}
-//	public Tile getTile(int x, int y)
-//	{
-//		return world[x][y];
-//	}
-//	public void paintComponent(Graphics g)
-//	{
-//		g.setColor(new Color(0,0,1));
-//	
-//			
-//			for(int x=0; x<width; x++)
-//				for(int y=0; y<height; y++){
-//					if (terrain[x][y]>=100&&terrain[x][y]<255)
-//						g.setColor(new Color(0,(int) (128+terrain[x][y]*0.5),0));
-//					else if (terrain[x][y]>=90&&terrain[x][y]<255)
-//						g.setColor(new Color(220,220,150));
-//					else
-//						if(terrain[x][y]>0&&terrain[x][y]<255)
-//							g.setColor(new Color(0,0,(int) (128+terrain[x][y]*0.5)));
-//						else
-//							g.setColor(new Color(0,0,128));
-////					if (world[x][y].textureID==4)
-////						g.setColor(new Color(0,(int) (64+terrain[x][y]*0.25),0));
-//					
-//						
-//					
-//					g.fillOval(x, y, 3, 3);
-//					
-//				}
-//	}
 }
