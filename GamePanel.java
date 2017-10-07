@@ -1,5 +1,4 @@
 import java.awt.Color;
-import javax.swing.Timer;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,113 +12,66 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 
 import java.awt.event.KeyListener;
-import java.awt.Robot;
 
 public class GamePanel extends JPanel implements MouseInputListener, KeyListener, ActionListener {
-    static public boolean running = false;
+    private static boolean running = false;
 
-    static public boolean keyW = false; //move forward
-    static public boolean keyA = false; //move left
-    static public boolean keyS = false; //move back
-    static public boolean keyD = false; //move right
-    static public boolean keyShift = false; //move up  -run
-    static public boolean keySpace = false; //move up  -jump
-    static public boolean keyCtrl = false; //move down
-    static public boolean trackShip = false; //move down
+    private static boolean keyW = false; //move forward
+    private static boolean keyA = false; //move left
+    private static boolean keyS = false; //move back
+    private static boolean keyD = false; //move right
+    private static boolean keyShift = false; //move up  -run
+    private static boolean keyCtrl = false; //move down
+    private static boolean trackShip = false; //move down
 
-    static public boolean keyUp = false;   //pitch up
-    static public boolean keyDown = false; //pitch down
-    static public boolean keyLeft = false; //yaw left
-    static public boolean keyRight = false; //yaw right
-    static public boolean keyCW = false; //roll CW
-    static public boolean keyCCW = false;//roll CCW
-    static public boolean mouselock = false;   //pitch up
-    static boolean clearBG = false;
-    static boolean LCam = true;
-    static public double sealevel = 0;
-    double it = 4;
+    private static boolean keyUp = false;   //pitch up
+    private static boolean keyDown = false; //pitch down
+    private static boolean keyLeft = false; //yaw left
+    private static boolean keyRight = false; //yaw right
+    private static boolean keyCW = false; //roll CW
+    private static boolean keyCCW = false;//roll CCW
+    private static double sealevel = 0;
+    private double it = 4;
 
-    MouseEvent mouselook;
-
-    Robot bot;
-
-    int groundR, groundG, groundB;
-
-    double drawWidthMult = 1;
+    private final double drawWidthMult = 1;
 
     //camera properties
-    pos3d control = new pos3d(0, 0, 0);        //x-y-z units=m/s
-    pos3d drift = new pos3d(0, 0, 0);        //x-y-z units=m/s
-    pos3d position = new pos3d(0, 128, 0);    //x-y-z units=meters
-    pos3d gaze = new pos3d(0, 0, 0);        //heading-pitch-roll. units=degrees
+    private final pos3d control = new pos3d(0, 0, 0);        //x-y-z units=m/s
+    private pos3d drift = new pos3d(0, 0, 0);        //x-y-z units=m/s
+    private pos3d position = new pos3d(0, 128, 0);    //x-y-z units=meters
+    private pos3d gaze = new pos3d(0, 0, 0);        //heading-pitch-roll. units=degrees
 
-    pos3d shipVel = new pos3d(0, 0, 0);
-    pos3d shipPos = new pos3d(0, 128, 0);
-    pos3d shipRot = new pos3d();
+    private final pos3d shipVel = new pos3d(0, 0, 0);
+    private final pos3d shipPos = new pos3d(0, 128, 0);
+    private final pos3d shipRot = new pos3d();
 
-    public ArrayList<Line3d> ellipse = new ArrayList<Line3d>();
-    public ArrayList<Line3d> enterprise = new ArrayList<Line3d>();
-    public ArrayList<Line3d> drawList = new ArrayList<Line3d>();
-    public ArrayList<Line3d> sky = new ArrayList<Line3d>();
+    private final ArrayList<Line3d> ellipse = new ArrayList<>();
+    private final ArrayList<Line3d> enterprise = new ArrayList<>();
+    private ArrayList<Line3d> drawList = new ArrayList<>();
+    private final ArrayList<Line3d> sky = new ArrayList<>();
 
-    public pos3d galaxytilt = new pos3d(90, 0, 0);
-    public ArrayList<Spiral> galaxy = new ArrayList<Spiral>();
-    public ArrayList<pos3d> stars = new ArrayList<pos3d>();
+    private final pos3d galaxytilt = new pos3d(90, 0, 0);
+    private final ArrayList<Spiral> galaxy = new ArrayList<>();
 
-    int FPS = 32; //(desired fps)
-    double tickerFactor = 250 / FPS;
-    double frametime = 1000 / FPS;
-    double bgD = 1;
+    private final int FPS = 32; //(desired fps)
 
-    double celestialSpeed = 0;//0.
-    double celestialTicker = (double) 0;//exposure
-    double exposure = 16 * 16;//
+    private double celestialSpeed = 0.1;
+    private double celestialTicker = (double) 0;//exposure
+    private double exposure = 16 * 16;//
 
-    pos2d gravCenter = new pos2d(0, 0);
-    pos2d satPos = new pos2d(-1, 0);
-    pos2d satForce = new pos2d(0, 0); //
-    double satAlt = Math.sqrt(Math.pow(gravCenter.x + satPos.x, 2) + Math.pow(gravCenter.y + satPos.y, 2));
+    private double movespeedfactor = 16;
+    private final double ticker = -500;
 
-    double movespeedfactor = 16;
-    double ticker = -500;
+    private double skyLight = 0;
 
-    double fametime = 10;
-    Timer clock = new Timer((int) (fametime), this);
-    double fuel = 500;
+    private World island = new World();
 
-    double rand[] = {Math.random(), Math.random(), Math.random(), Math.random()};
+    private final int gameWidth = 800;
+    private final int gameHeight = 480;
 
-    double skyLight = 0;
+    private double FOVmod = 2 * gameWidth / 480; //bigger = more zoom
 
-    public World island = new World();
-    ;
-
-    int gameWidth = 800;
-    int gameHeight = 480;
-
-    double FOVmod = 2 * gameWidth / 480; //bigger = more zoom
-
-    NoiseMap n = new NoiseMap();
-
-    bezier3d b = new bezier3d(new pos3d(-100, 0, 0), new pos3d(-100, 0, -1000), new pos3d(100, 0, -1000), new pos3d(100, 0, 0));
-
-    pos3d bez = new pos3d(0, 2, 3);
-    pos3d velBez = new pos3d(0, 2, 3);
-
-    ArrayList<poly3d> terrain = new ArrayList<poly3d>();
-    ArrayList<poly3d> drawPoly = new ArrayList<poly3d>();
-
-    double zoom;
-    double pan;
-    double pitch;
-
-    pos3d velA = new pos3d(), velB = new pos3d(), velC = new pos3d(), velD = new pos3d();
-
-    double num;
-    Ship player = new Ship();
-    double playerSpin = (Math.random() - Math.random()) * 10;
-
-    public pos3d colorMult = new pos3d(1, 1, 1);
+    private pos3d colorMult = new pos3d(1, 1, 1);
 
     @Override
     public void actionPerformed(ActionEvent e) {//new game "tick"
@@ -178,16 +130,16 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             gaze.y = gaze.y * .8 + (180 - shipRot.y) * .2 + (4 * offset);
             gaze.x = gaze.x * .8 + (shipRot.x) * .2;
 
-            pan = Math.atan2(position.x - shipPos.x / 128,
+            double pan = Math.atan2(position.x - shipPos.x / 128,
                     position.z - (shipPos.z + 32) / 128)
                     * 180 / Math.PI + 180;
 
-            pitch = Math.atan2(position.y - (shipPos.y + 128) / 128,
+            double pitch = Math.atan2(position.y - (shipPos.y + 128) / 128,
                     Math.sqrt(Math.pow(position.z - (shipPos.z + 32) / 128, 2)
                             + Math.pow(position.x - shipPos.x / 128, 2)))
                     * -180 / Math.PI;
 
-            zoom = Math.sqrt(Math.pow(position.x - shipPos.x / 128, 2) + Math.pow(position.y - shipPos.y / 128, 2) + Math.pow(position.z - shipPos.z / 128, 2)) / 256;
+            double zoom = Math.sqrt(Math.pow(position.x - shipPos.x / 128, 2) + Math.pow(position.y - shipPos.y / 128, 2) + Math.pow(position.z - shipPos.z / 128, 2)) / 256;
 
             if (trackShip) {
                 FOVmod = FOVmod * 3 / 4 + zoom / 4 / 2;
@@ -202,10 +154,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                 gaze.x = pitch;
             }
         }
-        if (ticker > 0)//once game actually starts,
-        {
-
-        }
+        double tickerFactor = 250 / FPS;
         if (running) {
 
             if (keyW) {
@@ -246,15 +195,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             }
         }
         if (running) {
-            bezier3d b = new bezier3d(new pos3d(-250, 0, 250), new pos3d(-500, 0, -500), new pos3d(500, 0, -500), new pos3d(250, 0, 250));
+            drawList = new ArrayList<>();
+            //clear list
 
-            drawList = new ArrayList<Line3d>();
-            ;   //clear list
-
-            for (int i = 0; i < ellipse.size(); i++) {
-                drawList.add(ellipse.get(i));
-            }
-            double itterator = Math.pow(2, -6);
+            drawList.addAll(ellipse);
         }
 
         if (running) {
@@ -279,10 +223,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         sky.clear();
         double tilt = 215;
 
-        for (int i = 0; i < galaxy.size(); i++) {
-            for (int j = 0; j < galaxy.get(i).pos.size(); j++) {
-                sky.add(new Line3d(pos3d.add(pos3d.rotate(new pos3d(galaxy.get(i).pos.get(j).x + Math.sin(celestialTicker / 100) * 2 + 64, galaxy.get(i).pos.get(j).y + 0, galaxy.get(i).pos.get(j).z + Math.cos(celestialTicker / 100) * 2 + 64), new pos3d(0, celestialTicker, tilt)), pos3d.mult(position, -0.01)),
-                        pos3d.add(pos3d.rotate(new pos3d(galaxy.get(i).pos.get(j).x + Math.sin(celestialTicker / 100) * 2 + 64, galaxy.get(i).pos.get(j).y + 0, galaxy.get(i).pos.get(j).z + Math.cos(celestialTicker / 100) * 2 + 64), new pos3d(0, celestialTicker, tilt)), pos3d.mult(position, -0.01))));
+        for (Spiral aGalaxy : galaxy) {
+            for (int j = 0; j < aGalaxy.pos.size(); j++) {
+                sky.add(new Line3d(pos3d.add(pos3d.rotate(new pos3d(aGalaxy.pos.get(j).x + Math.sin(celestialTicker / 100) * 2 + 64, aGalaxy.pos.get(j).y + 0, aGalaxy.pos.get(j).z + Math.cos(celestialTicker / 100) * 2 + 64), new pos3d(0, celestialTicker, tilt)), pos3d.mult(position, -0.01)),
+                        pos3d.add(pos3d.rotate(new pos3d(aGalaxy.pos.get(j).x + Math.sin(celestialTicker / 100) * 2 + 64, aGalaxy.pos.get(j).y + 0, aGalaxy.pos.get(j).z + Math.cos(celestialTicker / 100) * 2 + 64), new pos3d(0, celestialTicker, tilt)), pos3d.mult(position, -0.01))));
 
             }
         }
@@ -301,9 +245,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         }
 
         ellipse.clear();
-        for (int i = 0; i < enterprise.size(); i++) {
-            ellipse.add(new Line3d(pos3d.add(pos3d.rotateb(pos3d.add(enterprise.get(i).a, new pos3d(0, -65, -230)), shipRot), shipPos),
-                    pos3d.add(pos3d.rotateb(pos3d.add(enterprise.get(i).b, new pos3d(0, -65, -230)), shipRot), shipPos)));
+        for (Line3d anEnterprise : enterprise) {
+            ellipse.add(new Line3d(pos3d.add(pos3d.rotateb(pos3d.add(anEnterprise.a, new pos3d(0, -65, -230)), shipRot), shipPos),
+                    pos3d.add(pos3d.rotateb(pos3d.add(anEnterprise.b, new pos3d(0, -65, -230)), shipRot), shipPos)));
         }
         repaint();
 
@@ -311,6 +255,8 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
     GamePanel() {
 
+        double frametime = 1000 / FPS;
+        Timer clock = new Timer((int) (frametime), this);
         clock.start();
         addKeyListener(this);
 
@@ -327,10 +273,10 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             galaxy.add(new Spiral((int) (Math.random() * 64), (int) ((Math.random() * 64) * 1.2), (int) (Math.random() * 16 + 2), 5, (int) (Math.random() * 3 + 2), (int) (Math.random() * 3), 1, (int) (Math.random() * 40 - 20) + (i % 4) * 90, galaxytilt));
         }
 
-        for (int i = 0; i < galaxy.size(); i++) {
-            for (int j = 0; j < galaxy.get(i).pos.size(); j++) {
-                sky.add(new Line3d(pos3d.add(pos3d.rotate(new pos3d(galaxy.get(i).pos.get(j).x, galaxy.get(i).pos.get(j).y, galaxy.get(i).pos.get(j).z), new pos3d(0, 0, 215)), position),
-                        pos3d.add(pos3d.rotate(new pos3d(galaxy.get(i).pos.get(j).x, galaxy.get(i).pos.get(j).y, galaxy.get(i).pos.get(j).z), new pos3d(0, 0, 215)), position)));
+        for (Spiral aGalaxy : galaxy) {
+            for (int j = 0; j < aGalaxy.pos.size(); j++) {
+                sky.add(new Line3d(pos3d.add(pos3d.rotate(new pos3d(aGalaxy.pos.get(j).x, aGalaxy.pos.get(j).y, aGalaxy.pos.get(j).z), new pos3d(0, 0, 215)), position),
+                        pos3d.add(pos3d.rotate(new pos3d(aGalaxy.pos.get(j).x, aGalaxy.pos.get(j).y, aGalaxy.pos.get(j).z), new pos3d(0, 0, 215)), position)));
             }
         }
 
@@ -365,11 +311,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
     }
 
     public void paintComponent(Graphics g) {
-        groundR = (int) (0 * colorMult.x);
-        groundG = (int) (0 * colorMult.y);
-        groundB = (int) (0 * colorMult.z);
-
-        int gree = 31;
+        int groundR = (int) (0 * colorMult.x);
+        int groundG = (int) (0 * colorMult.y);
+        int groundB = (int) (0 * colorMult.z);
 
         g.setColor(
                 new Color(
@@ -379,32 +323,31 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                 )
         );
 
-        clearBG = false;
 
         g.fillRect(0, 0, gameWidth, gameHeight);
 
-        ArrayList<Line3d> skybox = new ArrayList<Line3d>();
-        for (int i = 0; i < sky.size(); i++) {
+        ArrayList<Line3d> skybox = new ArrayList<>();
+        for (Line3d aSky : sky) {
             skybox.add(
                     new Line3d(
                             pos3d.rotate(
                                     new pos3d(
-                                            sky.get(i).a.x,
-                                            sky.get(i).a.y,
-                                            sky.get(i).a.z),
+                                            aSky.a.x,
+                                            aSky.a.y,
+                                            aSky.a.z),
                                     gaze),
                             pos3d.rotate(
                                     new pos3d(
-                                            sky.get(i).b.x,
-                                            sky.get(i).b.y,
-                                            sky.get(i).b.z),
+                                            aSky.b.x,
+                                            aSky.b.y,
+                                            aSky.b.z),
                                     gaze
                             )
                     )
             );
         }
 
-        ArrayList<Line3d> lines = new ArrayList<Line3d>();
+        ArrayList<Line3d> lines = new ArrayList<>();
 
         for (int i = 0; i < skybox.size(); i++) {
             if (skybox.get(i).a.z > 0.06125 && skybox.get(i).b.z > 0.06125) {
@@ -446,8 +389,8 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
         it = 4;
         double itfactor = 2;
-        double dist = 0; //AFDASS
-        double lock = 0; //qht
+        double dist;
+        double lock;
         double start = 64;
         double end = 1;
 
@@ -545,18 +488,16 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
         }
 
-        for (int i = 0; i < lines.size(); i++) {
-            if (lines.get(i).a != null && lines.get(i).b != null) {
-                if (lines.get(i).a.z > 0.0125 && lines.get(i).b.z > 0.0125) {
-                    double ahr = ((((2 * exposure / (lines.get(i).b.z + lines.get(i).a.z))) * 0.75 + groundR * .25) * skyLight) * colorMult.x;
-                    double gee = ((((2 * exposure / (lines.get(i).b.z + lines.get(i).a.z))) * 0.75 + groundG * .25) * skyLight) * colorMult.y;
-                    double bee = ((((2 * exposure / (lines.get(i).b.z + lines.get(i).a.z))) * 0.75 + groundB * .25) * skyLight) * colorMult.z;
-                    double alfa = ((((2 * exposure / (lines.get(i).b.z + lines.get(i).a.z))) * 0.75 + .25) * skyLight);
+        for (Line3d line : lines) {
+            if (line.a != null && line.b != null) {
+                if (line.a.z > 0.0125 && line.b.z > 0.0125) {
+                    double ahr = ((((2 * exposure / (line.b.z + line.a.z))) * 0.75 + groundR * .25) * skyLight) * colorMult.x;
+                    double gee = ((((2 * exposure / (line.b.z + line.a.z))) * 0.75 + groundG * .25) * skyLight) * colorMult.y;
+                    double bee = ((((2 * exposure / (line.b.z + line.a.z))) * 0.75 + groundB * .25) * skyLight) * colorMult.z;
 
                     if (ahr < 0) ahr = 0;
                     if (gee < 0) gee = 0;
                     if (bee < 0) bee = 0;
-                    if (alfa < 0) alfa = 0;
 
                     if (ahr > 255)
                         ahr = 255;
@@ -564,16 +505,14 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                         gee = 255;
                     if (bee > 255)
                         bee = 255;
-                    // if (alfa>255)
-                    alfa = 255;
 
 
-                    g.setColor(new Color((int) ahr, (int) gee, (int) bee, (int) alfa));
+                    g.setColor(new Color((int) ahr, (int) gee, (int) bee));
 
-                    g.drawLine((int) ((FOVmod * (lines.get(i).a.x * 128) / (lines.get(i).a.z)) * drawWidthMult) + gameWidth / 2,
-                            (int) (-FOVmod * (lines.get(i).a.y * 128) / (lines.get(i).a.z)) + gameHeight / 2,
-                            (int) ((FOVmod * (lines.get(i).b.x * 128) / (lines.get(i).b.z)) * drawWidthMult) + gameWidth / 2,
-                            (int) (-FOVmod * (lines.get(i).b.y * 128) / (lines.get(i).b.z)) + gameHeight / 2);
+                    g.drawLine((int) ((FOVmod * (line.a.x * 128) / (line.a.z)) * drawWidthMult) + gameWidth / 2,
+                            (int) (-FOVmod * (line.a.y * 128) / (line.a.z)) + gameHeight / 2,
+                            (int) ((FOVmod * (line.b.x * 128) / (line.b.z)) * drawWidthMult) + gameWidth / 2,
+                            (int) (-FOVmod * (line.b.y * 128) / (line.b.z)) + gameHeight / 2);
                 }
             }
         }
@@ -586,19 +525,17 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         }
 
         g.setColor(new Color((int) (255 * colorMult.x), (int) (255 * colorMult.y), (int) (0 * colorMult.z)));
-        int[] xlist = {-10 + gameWidth / 2, -3 + gameWidth / 2, 0 + gameWidth / 2, 3 + gameWidth / 2, 10 + gameWidth / 2};
+        int[] xlist = {-10 + gameWidth / 2, -3 + gameWidth / 2, gameWidth / 2, 3 + gameWidth / 2, 10 + gameWidth / 2};
         int[] ylist = {-2 + gameHeight - 48, -2 + gameHeight - 48, 3 + gameHeight - 48, 0 - 2 + gameHeight - 48, 0 - 2 + gameHeight - 48};
         g.drawPolygon(xlist, ylist, 5);
 
         g.setColor(new Color((int) (255 * colorMult.x), (int) (255 * colorMult.y), (int) (255 * colorMult.z)));
-        if (ticker < 0) {
-            g.drawString("Washed Ashore, readability update", 64, 64);
-            g.drawString("  IJKL keys to turn", 64, 64 + 16);
-            g.drawString("  WASD + shift/control to move", 64, 64 + 32);
-            g.drawString("  period/comma to adjust movement speed", 64, 64 + 48);
-            g.drawString("  ...", 64, 64 + 64);
-            //g.drawString("  CTRL to crouch"		 				,64, 64+80);
-        }
+        g.drawString("Washed Ashore, readability update", 64, 64);
+        g.drawString("  IJKL keys to turn", 64, 64 + 16);
+        g.drawString("  WASD + shift/control to move", 64, 64 + 32);
+        g.drawString("  period/comma to adjust movement speed", 64, 64 + 48);
+        g.drawString("  ...", 64, 64 + 64);
+        //g.drawString("  CTRL to crouch"		 				,64, 64+80);
 
 
         if (!running) {
@@ -613,29 +550,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                                 (int) (255 * colorMult.z)));
             }
         }
-        int z = 8;
-
-        double tempx = 128 + (shipPos.x / 128);
-        double tempy = 128 - (shipPos.z / 128);
-        if (tempx < 0) {
-            tempx = 0;
-        }
-        if (tempx > 255) {
-            tempx = 0;
-        }
-        if (tempy < 0) {
-            tempy = 0;
-        }
-        if (tempy > 255) {
-            tempy = 255;
-        }
-
-        LCam = !LCam;
     }
 
     public void mouseClicked(MouseEvent e) {
-        if (running) mouselock = true;
-        n = new NoiseMap();
         repaint();
     }
 
@@ -681,16 +598,11 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
             keyShift = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            keySpace = true;
-        }
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
             keyCtrl = true;
         }
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            mouselock = false;
             running = !running;
-            if (running) mouselock = true;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_R) {
@@ -776,16 +688,8 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         }
 
         if (e.getKeyCode() == KeyEvent.VK_2) {
-            double temp = 8;
-            double detail = 5.3333;
-
-            detail = 2;
-            int ender = 4;
             enterprise.clear();
-
-			/*
-				enterprise = geogen.newship();
-			*/
+//            enterprise = geogen.newship();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_4) {
@@ -810,9 +714,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
             keyShift = false;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            keySpace = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
             keyCtrl = false;
@@ -855,7 +756,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
     public void mouseMoved(MouseEvent e) {
     }
 
-    public void drawPoly(pos3d e1, pos3d e2, pos3d e3, pos3d e4, Graphics g, Color c, boolean l) {
+    private void drawPoly(pos3d e1, pos3d e2, pos3d e3, pos3d e4, Graphics g, Color c) {
         g.setColor(c);
         e1.x -= position.x;
         e1.y -= position.y;
@@ -906,21 +807,16 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                     (int) ((-FOVmod * (e2.y * 128) / (e2.z))) + gameHeight / 2,
                     (int) ((-FOVmod * (e3.y * 128) / (e3.z))) + gameHeight / 2,
                     (int) ((-FOVmod * (e4.y * 128) / (e4.z))) + gameHeight / 2,};
-            i = 4;
 
             g.setColor(new Color((int) (c.getRed() * colorMult.x), (int) (c.getGreen() * colorMult.y), (int) (c.getBlue() * colorMult.z)));
 
             g.fillPolygon(f, v, i);
 
-            if (l) {
-                g.setColor(c.darker().darker());
-                g.drawPolygon(f, v, i);
-            }
         }
     }
 
-    public void drawTerrainTile(Graphics g, double x, double y, double it) {
-        double shiny = 0;
+    private void drawTerrainTile(Graphics g, double x, double y, double it) {
+        double shiny;
         double ahr;
         double gee;
         double bee;
@@ -928,17 +824,16 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         double gee2;
         double bee2;
         double alfa = 256;
-        boolean l = true;
 
         double a = island.terrain[(int) (x)][(int) (y)] - 90,
                 b = island.terrain[(int) (x + it)][(int) (y)] - 90,
                 c = island.terrain[(int) (x + it)][(int) (y + it)] - 90,
                 d = island.terrain[(int) (x)][(int) (y + it)] - 90;
 
-        double a2 = 0;
-        double b2 = 0;
-        double c2 = 0;
-        double d2 = 0;
+        double a2;
+        double b2;
+        double c2;
+        double d2;
 
         if (a < 0)
             a = 4 * -Math.sqrt(Math.abs(a));
@@ -952,12 +847,12 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         if (island.elevation[(int) (x + it / 2)][(int) (y + it / 2)] + (island.layers.get(0)[(int) (x + it / 2)][(int) (y + it / 2)] * 8) > 60) { //Forest
             ahr = ((((255) / 12) * ((island.elevation[(int) x][(int) y] + 127) / 128) + island.layers.get(0)[(int) x][(int) y] * 2 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 4) * skyLight);
             gee = ((((255) / 6) * ((island.elevation[(int) x][(int) y] + 127) / 128) + island.layers.get(0)[(int) x][(int) y] * 4 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 2) * skyLight);
-            bee = ((((0) / 4) - ((0) / 4) * ((island.elevation[(int) x][(int) y] + 127) / 128)) * skyLight);
+            bee = ((((0) / 4)) * skyLight);
             shiny = .6;
-        } else if (island.elevation[(int) (x + it / 2)][(int) (y + it / 2)] > 20) { //grass
+        } else if (island.elevation[(int) (x + it / 2)][(int) (y + it / 2)] > 20) { //grass`
             ahr = ((((255) / 6) * ((island.elevation[(int) x][(int) y] + 127) / 128) + island.layers.get(0)[(int) x][(int) y] * 2 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 4) * skyLight);
             gee = ((((255) / 3) * ((island.elevation[(int) x][(int) y] + 127) / 128) + island.layers.get(0)[(int) x][(int) y] * 4 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 2) * skyLight);
-            bee = ((((0) / 4) - ((0) / 4) * ((island.elevation[(int) x][(int) y] + 127) / 128)) * skyLight);
+            bee = ((((0) / 4)) * skyLight);
             shiny = 1;
         } else if (island.elevation[(int) (x + it / 2)][(int) (y + it / 2)] > 0) { //beach
             ahr = (((127) + island.layers.get(0)[(int) x][(int) y] * 2 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 4) * skyLight);
@@ -972,21 +867,18 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
             shiny = 0.1;
             alfa = island.terrain[(int) x][(int) y] * 5 - 64;
-            l = false;
         } else if (island.elevation[(int) x][(int) y] == 0) { //ocean
             ahr = 0;
             gee = 0;
             bee = 127;
             shiny = 0;
             alfa = 0;
-            l = false;
         } else { //other
             ahr = (((127) + island.layers.get(0)[(int) x][(int) y] * 2 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 4) * skyLight);
             gee = (((127) + island.layers.get(0)[(int) x][(int) y] * 4 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 2) * skyLight);
             bee = (((64) + island.layers.get(0)[(int) x][(int) y] * 4 + island.layers.get(2)[(int) x / 8][(int) y / 8] / 2) * skyLight);
             shiny = 0;
             alfa = 0;
-            l = true;
         }
 
 
@@ -1017,9 +909,9 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             fact += 0.25;
             b2 = Math.sin((ticker / 4 + x + y - it) / 2) * wave + tide;
         }
-        if (c2 < Math.sin((ticker / 4 + x + y + 00) / 2) * wave + tide) {
+        if (c2 < Math.sin((ticker / 4 + x + y + 0) / 2) * wave + tide) {
             fact += 0.25;
-            c2 = Math.sin((ticker / 4 + x + y + 00) / 2) * wave + tide;
+            c2 = Math.sin((ticker / 4 + x + y + 0) / 2) * wave + tide;
         }
         if (d2 < Math.sin((ticker / 4 + x + y - it) / 2) * wave + tide) {
             fact += 0.25;
@@ -1034,7 +926,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             ahr2 += (48 + Math.sin((ticker / 4 + x + y - it) / 2) * 6) * fact;
             gee2 += (127 + Math.atan((island.terrain[(int) x][(int) y] - tide) / 16 - 3) * 16 - (32 + Math.sin((ticker / 4 + x + y - it) * 12))) * fact;
             bee2 += (196 + Math.atan((island.terrain[(int) x][(int) y] - tide) / 16 - 3) * 16 - (32 + Math.sin((ticker / 4 + x + y - it) * 12)) + island.layers.get(0)[(int) x][(int) y] * 12 - 24) * fact;
-            ;
         }
 
         fact = 0.5;
@@ -1044,7 +935,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
         ahr += (48 - 32 + Math.atan((island.terrain[(int) x][(int) y] - tide) / 16 - 3) * 32 + Math.sin((ticker / 4 + x + y - it) / 2) * 6) * fact;
         gee += (127 - 48 + Math.atan((island.terrain[(int) x][(int) y] - tide) / 16 - 3) * 48 - (32 + Math.sin((ticker / 4 + x + y - it) * 12))) * fact;
         bee += (196 - 48 + Math.atan((island.terrain[(int) x][(int) y] - tide) / 16 - 3) * 48 - (32 + Math.sin((ticker / 4 + x + y - it) * 12)) + island.layers.get(0)[(int) x][(int) y] * 12 - 24) * fact;
-        ;
 
         if (ahr > 255)
             ahr = 255;
@@ -1081,13 +971,13 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
                 new pos3d(x + it - 128, 1 * (b) / 8, y - 128),
                 new pos3d(x + it - 128, 1 * (c) / 8, y + it - 128),
                 new pos3d(x - 128, 1 * (d) / 8, y + it - 128), g,
-                color, false);
+                color);
         Color color2 = new Color((int) ahr2, (int) gee2, (int) bee2);
         drawPoly(new pos3d(x - 128, 1 * (a2) / 8, y - 128),
                 new pos3d(x + it - 128, 1 * (b2) / 8, y - 128),
                 new pos3d(x + it - 128, 1 * (c2) / 8, y + it - 128),
                 new pos3d(x - 128, 1 * (d2) / 8, y + it - 128), g,
-                color2, false);
+                color2);
 
         double ahr1 = ahr;
         double gee1 = gee;
@@ -1101,7 +991,6 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
 
         shiny = 16;
         alfa = 127;
-        l = false;
 
         ahr += (Math.sin(Math.toRadians(ticker + x + it) * 8) + Math.sin(Math.toRadians(ticker + y) * 8)
                 - Math.sin(Math.toRadians(ticker + x) * 8) - Math.sin(Math.toRadians(ticker + y + it) * 8)) * shiny / it * skyLight * 8;
@@ -1223,7 +1112,7 @@ public class GamePanel extends JPanel implements MouseInputListener, KeyListener
             color = new Color((int) ahr1, (int) gee1, (int) bee1);
         }
 
-        if (true && !(o1 && o2 && o3 && o4)) {
+        if (!(o1 && o2 && o3 && o4)) {
             color = new Color((int) ahr, (int) gee, (int) bee, (int) alfa);
         }
 
