@@ -1,7 +1,7 @@
 # washed-ashore
 Cleanup of a several-year-old 3D project written in java.
 
-I wrote the majority of this code my junior year of High School (2012-2013), after taking AP computer science the previous year, but moving OS's several times has messed up date-created metadata, so I don't know exactly when.
+I wrote this code late in my junior year of High School (spring 2013), after taking AP computer science the previous year, but moving OS's several times has messed up date-created metadata. [This video](https://youtu.be/Dwpgf_NmQjc) from February 2013 shows an early version of the code that would grow into this program.
 
 ![animation of program in motion](washedAshore5.gif)
 
